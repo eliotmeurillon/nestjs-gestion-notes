@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Note } from './notes.model';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -18,11 +18,13 @@ export class NotesService {
 
   update(id: string, updatedNote: Note): Note {
     const noteIndex = this.notes.findIndex((note) => note.id === id);
-    if (noteIndex > -1) {
-      this.notes[noteIndex] = updatedNote;
-      return this.notes[noteIndex];
+
+    if (noteIndex === -1) {
+      throw new NotFoundException(`Note with id ${id} not found`);
     }
-    return null;
+
+    this.notes[noteIndex] = { ...this.notes[noteIndex], ...updatedNote };
+    return this.notes[noteIndex];
   }
 
   delete(id: string): boolean {

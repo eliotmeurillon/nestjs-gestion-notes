@@ -41,6 +41,20 @@ export class NotesController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updatedNote: Note): Note {
+    const errorMessage = [];
+
+    if (!updatedNote.title) {
+      errorMessage.push('title is required');
+    }
+
+    if (!updatedNote.content) {
+      errorMessage.push('content is required');
+    }
+
+    if (errorMessage.length > 0) {
+      throw new BadRequestException(errorMessage.join(', '));
+    }
+
     return this.notesService.update(id, updatedNote);
   }
 

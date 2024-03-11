@@ -22,9 +22,20 @@ export class NotesController {
 
   @Post()
   create(@Body() note: Note): Note {
-    if (!note.title || !note.content) {
-      throw new BadRequestException('Title and description are required');
+    const errorMessage = [];
+
+    if (!note.title) {
+      errorMessage.push('title is required');
     }
+
+    if (!note.content) {
+      errorMessage.push('content is required');
+    }
+
+    if (errorMessage.length > 0) {
+      throw new BadRequestException(errorMessage.join(', '));
+    }
+
     return this.notesService.create(note);
   }
 

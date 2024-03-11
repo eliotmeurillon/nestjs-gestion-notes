@@ -6,6 +6,7 @@ import {
   Delete,
   Body,
   Param,
+  BadRequestException,
 } from '@nestjs/common';
 import { Note } from './notes.model';
 import { NotesService } from './notes.service';
@@ -21,6 +22,9 @@ export class NotesController {
 
   @Post()
   create(@Body() note: Note): Note {
+    if (!note.title || !note.content) {
+      throw new BadRequestException('Title and description are required');
+    }
     return this.notesService.create(note);
   }
 

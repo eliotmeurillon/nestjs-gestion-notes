@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Note } from './notes.model';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class NotesService {
@@ -10,6 +11,7 @@ export class NotesService {
   }
 
   create(note: Note): Note {
+    note.id = uuidv4();
     this.notes.push(note);
     return note;
   }

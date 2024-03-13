@@ -6,7 +6,7 @@ import { LoggerService } from './logger/logger.service';
 import { LoggerMiddleware } from './logger/logger.middleware';
 
 @Module({
-  imports: [NotesModule],
+  imports: [NotesModule.register({ useMock: true })],
   controllers: [AppController],
   providers: [AppService, LoggerService],
 })
